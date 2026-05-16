@@ -85,7 +85,7 @@
         <p style="color:#64748b; margin:0;">Search or select from our verified global inventory</p>
         
         <input type="text" id="searchBar" class="search-box" placeholder="🔍 Search offers...">
-        <div id="storageVault" class="grid-storage">Loading vault configurations...</div>
+        <div id="storageVault" class="grid-storage">Loading live inventory sheet...</div>
     </div>
 
     <script>
@@ -100,14 +100,12 @@
                 return;
             }
             items.forEach(item => {
-                if (item.name && item.url) {
-                    const card = document.createElement('a');
-                    card.href = item.url;
-                    card.target = '_blank';
-                    card.className = 'offer-card';
-                    card.innerHTML = `<span>${item.name}</span><span class="go-btn">Go</span>`;
-                    storageVault.appendChild(card);
-                }
+                const card = document.createElement('a');
+                card.href = item.url;
+                card.target = '_blank';
+                card.className = 'offer-card';
+                card.innerHTML = `<span>${item.name}</span><span class="go-btn">Go</span>`;
+                storageVault.appendChild(card);
             });
         }
 
@@ -119,20 +117,39 @@
             displayInventory(filteredItems);
         });
 
-        // Safely pull from data/promo.json to prevent internal code edits
-        fetch('data/promo.json?v=' + Date.now())
-            .then(res => {
-                if(!res.ok) throw new Error('Storage file not ready');
-                return res.json();
-            })
-            .then(data => {
-                if (data && Array.isArray(data.links)) {
-                    offerDatabase = data.links;
-                    displayInventory(offerDatabase);
+        // Simple CSV Spreadsheet text reader logic
+        function parseSpreadsheet(csvText) {
+            const lines = csvText.split('\n');
+            const list = [];
+            for (let i = 1; i < lines.length; i++) {
+                const row = lines[i].trim();
+                if (!row) continue;
+                
+                // Splitting data values cleanly by comma delimiter
+                const commaIndex = row.indexOf(',');
+                if (commaIndex !== -1) {
+                    const name = row.substring(0, commaIndex).replace(/^"|"$/g, '').trim();
+                    const url = row.substring(commaIndex + 1).replace(/^"|"$/g, '').trim();
+                    if(name && url) {
+                        list.push({ name, url });
+                    }
                 }
+            }
+            return list;
+        }
+
+        // Fetch direct from the simple spreadsheet file tracking path
+        fetch('data/links.csv?v=' + Date.now())
+            .then(res => {
+                if(!res.ok) throw new Error('Spreadsheet file links.csv not ready');
+                return res.text();
+            })
+            .then(csvText => {
+                offerDatabase = parseSpreadsheet(csvText);
+                displayInventory(offerDatabase);
             })
             .catch(err => {
-                storageVault.innerHTML = '<p style="color:#ef4444; padding:20px;">Configuration error. Check data/promo.json.</p>';
+                storageVault.innerHTML = '<p style="color:#ef4444; padding:20px;">Spreadsheet Error: Make sure data/links.csv exists.</p>';
             });
     </script>
 
