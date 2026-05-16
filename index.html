@@ -79,6 +79,30 @@
                 console.warn("Using default fallback link. Profile status: " + err.message);
             });
     </script>
+    <script>
+        console.log("System active. Pulling promo configurations...");
+
+        // Connect the banner image
+        const bannerImg = document.getElementById('banner-placeholder');
+        bannerImg.src = 'data/banner.jpg'; 
+        bannerImg.onload = () => console.log("Banner image loaded successfully.");
+
+        // Connect the redirect button link
+        fetch('data/promo.json')
+            .then(response => {
+                if (!response.ok) throw new Error('promo.json missing');
+                return response.json();
+            })
+            .then(data => {
+                if (data.url) {
+                    document.getElementById('promo-link-placeholder').href = data.url;
+                    console.log("Button link updated to: " + data.url);
+                }
+            })
+            .catch(err => {
+                console.warn("Using default fallback link: " + err.message);
+            });
+    </script>
 
 </body>
 </html>
