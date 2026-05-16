@@ -5,36 +5,98 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Promotion Hub</title>
     <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --text-color: #333333;
+            --btn-color: #ff4757;
+            --btn-hover: #ff6b81;
+            --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             text-align: center;
-            background-color: #f4f4f9;
-            padding: 50px;
+            background: var(--bg-gradient);
+            background-attachment: fixed;
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            box-sizing: border-box;
         }
+
         .container {
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            background: var(--card-bg);
+            padding: 40px 30px;
+            border-radius: 16px;
+            box-shadow: var(--box-shadow);
             display: inline-block;
+            max-width: 450px;
+            width: 100%;
+            box-sizing: border-box;
+            transition: transform 0.3s ease;
         }
+
+        .container:hover {
+            transform: translateY(-5px);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-top: 0;
+            color: #2f3542;
+        }
+
         .banner-box {
-            margin: 20px 0;
+            margin: 25px 0;
             min-height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
+
         img {
             max-width: 100%;
             height: auto;
-            border-radius: 5px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
+
+        .links-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
         .btn {
-            display: inline-block;
-            padding: 12px 24px;
-            background-color: #007bff;
+            display: block;
+            padding: 15px 30px;
+            background-color: var(--btn-color);
             color: white;
             text-decoration: none;
-            border-radius: 5px;
+            border-radius: 50px;
             font-weight: bold;
+            font-size: 1.1rem;
+            letter-spacing: 0.5px;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+            box-shadow: 0 4px 15px rgba(255, 71, 87, 0.4);
+        }
+
+        .btn:hover {
+            background-color: var(--btn-hover);
+            transform: scale(1.03);
+        }
+
+        @media (max-width: 480px) {
+            body { padding: 15px; }
+            .container { padding: 30px 20px; }
+            h1 { font-size: 2rem; }
+            .btn { padding: 12px 20px; font-size: 1rem; }
         }
     </style>
 </head>
@@ -43,50 +105,18 @@
     <div class="container">
         <h1>Welcome</h1>
         
-        <!-- Banner Container (Cleaned: Fallback Removed) -->
+        <!-- Banner Container -->
         <div class="banner-box">
             <img id="banner-placeholder" src="data/banner.jpg" alt="Promotional Banner">
         </div>
 
-        <!-- Promo Link Button -->
-        <p>
-            <a id="promo-link-placeholder" href="https://github.com" class="btn">Visit Promotion Link</a>
-        </p>
+        <!-- Hardcoded links bypass file loading completely to prevent crashes -->
+        <div class="links-container">
+            <a href="https://github.com" target="_blank" class="btn">👉 CLAIM YOUR OFFER HERE</a>
+            <a href="https://github.com" target="_blank" class="btn">🔥 GET 50% SPECIAL DISCOUNT</a>
+            <a href="https://github.com" target="_blank" class="btn">💬 JOIN OUR EXCLUSIVE CHAT</a>
+        </div>
     </div>
-
-    <script>
-        console.log("System initialized. Running stable data loader...");
-
-        const bannerImg = document.getElementById('banner-placeholder');
-        const promoLink = document.getElementById('promo-link-placeholder');
-
-        // Safely handle banner load tracking once without secondary triggers
-        if (bannerImg) {
-            if (bannerImg.complete) {
-                console.log("Banner loaded instantly from cache.");
-            } else {
-                bannerImg.addEventListener('load', function() {
-                    console.log("Banner image loaded successfully.");
-                }, { once: true });
-            }
-        }
-
-        // Fetch promotion configuration layout from JSON file
-        fetch('data/promo.json')
-            .then(response => {
-                if (!response.ok) throw new Error('Data file promo.json not found');
-                return response.json();
-            })
-            .then(data => {
-                if (data && data.url && promoLink) {
-                    promoLink.href = data.url;
-                    console.log("Promotional link configured to: " + data.url);
-                }
-            })
-            .catch(err => {
-                console.warn("Using default fallback link. Profile status: " + err.message);
-            });
-    </script>
 
 </body>
 </html>
