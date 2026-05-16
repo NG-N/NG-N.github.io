@@ -3,72 +3,136 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Promotion Hub</title>
+    <title>Premium Offer Hub</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            text-align: center;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             background-attachment: fixed;
             margin: 0;
-            padding: 50px 20px;
+            padding: 30px 15px;
             color: #333333;
         }
-        .container {
+        .hub-container {
             background: white;
-            padding: 40px 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-            display: inline-block;
-            max-width: 400px;
+            max-width: 600px;
             width: 100%;
+            margin: 0 auto;
+            padding: 30px 20px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
             box-sizing: border-box;
+            text-align: center;
         }
-        .banner-box {
-            margin: 20px 0;
-            min-height: 100px;
+        .search-box {
+            width: 100%;
+            padding: 12px 15px;
+            margin: 15px 0 25px 0;
+            border: 2px solid #e2e8f0;
+            border-radius: 30px;
+            font-size: 1rem;
+            box-sizing: border-box;
+            outline: none;
         }
-        img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 8px;
+        .search-box:focus {
+            border-color: #ff4757;
         }
-        .links-container {
+        .grid-storage {
             display: flex;
             flex-direction: column;
-            gap: 15px;
-            margin-top: 20px;
+            gap: 12px;
+            max-height: 500px;
+            overflow-y: auto;
+            padding-right: 5px;
         }
-        .btn {
-            display: block;
-            padding: 15px 20px;
-            background-color: #ff4757;
-            color: white;
+        /* Custom scrollbar for clean layout */
+        .grid-storage::-webkit-scrollbar {
+            width: 6px;
+        }
+        .grid-storage::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+        .offer-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f8fafc;
+            padding: 14px 20px;
+            border-radius: 10px;
+            border-left: 5px solid #ff4757;
             text-decoration: none;
-            border-radius: 50px;
+            color: #334155;
             font-weight: bold;
-            font-size: 1.1rem;
-            box-shadow: 0 4px 10px rgba(255, 71, 87, 0.3);
+            transition: transform 0.1s ease, background 0.2s ease;
+        }
+        .offer-card:hover {
+            background: #f1f5f9;
+            transform: scale(1.01);
+        }
+        .go-btn {
+            background: #ff4757;
+            color: white;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h1>Welcome</h1>
+    <div class="hub-container">
+        <h1 style="margin-top:0; color:#1e293b;">Promotion Engine</h1>
+        <p style="color:#64748b; margin:0;">Search or select from our verified global inventory</p>
         
-        <!-- Banner Container -->
-        <div class="banner-box">
-            <img src="data/banner.jpg" alt="Promotional Banner">
-        </div>
+        <!-- Live Filter Input Box -->
+        <input type="text" id="searchBar" class="search-box" placeholder="🔍 Search offers...">
 
-        <!-- 3 Hardcoded Buttons -->
-        <div class="links-container">
-            <a href="https://github.com" target="_blank" class="btn">👉 CLAIM YOUR OFFER HERE</a>
-            <a href="https://pages.github.com" target="_blank" class="btn">🔥 GET 50% SPECIAL DISCOUNT</a>
-            <a href="https://github.com" target="_blank" class="btn">💬 JOIN OUR EXCLUSIVE CHAT</a>
-        </div>
+        <!-- Big Storage Vault Wrapper -->
+        <div id="storageVault" class="grid-storage"></div>
     </div>
+
+    <script>
+        // VAULT DATA MATRIX - Dump your 99 links here safely without breaking layouts
+        const offerDatabase = [
+            { name: "👉 CPM Traffic Link 1", url: "https://effectivecpmnetwork.com" },
+            { name: "🔥 Premium Promo Offer 2", url: "https://github.com" },
+            { name: "💬 Joint Community Chat 3", url: "https://github.com" }
+            // Paste your next 96 links directly below this line following the exact same format
+        ];
+
+        const storageVault = document.getElementById('storageVault');
+        const searchBar = document.getElementById('searchBar');
+
+        // Render Database Items Instantly
+        function displayInventory(items) {
+            storageVault.innerHTML = '';
+            if(items.length === 0) {
+                storageVault.innerHTML = '<p style="color:#94a3b8; padding:20px;">No matching campaigns found.</p>';
+                return;
+            }
+            items.forEach(item => {
+                const card = document.createElement('a');
+                card.href = item.url;
+                card.target = '_blank';
+                card.className = 'offer-card';
+                card.innerHTML = `<span>${item.name}</span><span class="go-btn">Go</span>`;
+                storageVault.appendChild(card);
+            });
+        }
+
+        // Live Real-Time Search Filtering Logic
+        searchBar.addEventListener('input', (e) => {
+            const searchString = e.target.value.toLowerCase();
+            const filteredItems = offerDatabase.filter(item => 
+                item.name.toLowerCase().includes(searchString)
+            );
+            displayInventory(filteredItems);
+        });
+
+        // Initialize display execution
+        displayInventory(offerDatabase);
+    </script>
 
 </body>
 </html>
