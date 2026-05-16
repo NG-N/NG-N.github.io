@@ -45,7 +45,6 @@
             overflow-y: auto;
             padding-right: 5px;
         }
-        /* Custom scrollbar for clean layout */
         .grid-storage::-webkit-scrollbar {
             width: 6px;
         }
@@ -85,43 +84,33 @@
         <h1 style="margin-top:0; color:#1e293b;">Promotion Engine</h1>
         <p style="color:#64748b; margin:0;">Search or select from our verified global inventory</p>
         
-        <!-- Live Filter Input Box -->
         <input type="text" id="searchBar" class="search-box" placeholder="🔍 Search offers...">
-
-        <!-- Big Storage Vault Wrapper -->
-        <div id="storageVault" class="grid-storage"></div>
+        <div id="storageVault" class="grid-storage">Loading vault configurations...</div>
     </div>
 
     <script>
-        // VAULT DATA MATRIX - Dump your 99 links here safely without breaking layouts
-        const offerDatabase = [
-            { name: "👉 CPM Traffic Link 1", url: "https://effectivecpmnetwork.com" },
-            { name: "🔥 Premium Promo Offer 2", url: "https://github.com" },
-            { name: "💬 Joint Community Chat 3", url: "https://github.com" }
-            // Paste your next 96 links directly below this line following the exact same format
-        ];
-
+        let offerDatabase = [];
         const storageVault = document.getElementById('storageVault');
         const searchBar = document.getElementById('searchBar');
 
-        // Render Database Items Instantly
         function displayInventory(items) {
             storageVault.innerHTML = '';
-            if(items.length === 0) {
+            if(!items || items.length === 0) {
                 storageVault.innerHTML = '<p style="color:#94a3b8; padding:20px;">No matching campaigns found.</p>';
                 return;
             }
             items.forEach(item => {
-                const card = document.createElement('a');
-                card.href = item.url;
-                card.target = '_blank';
-                card.className = 'offer-card';
-                card.innerHTML = `<span>${item.name}</span><span class="go-btn">Go</span>`;
-                storageVault.appendChild(card);
+                if (item.name && item.url) {
+                    const card = document.createElement('a');
+                    card.href = item.url;
+                    card.target = '_blank';
+                    card.className = 'offer-card';
+                    card.innerHTML = `<span>${item.name}</span><span class="go-btn">Go</span>`;
+                    storageVault.appendChild(card);
+                }
             });
         }
 
-        // Live Real-Time Search Filtering Logic
         searchBar.addEventListener('input', (e) => {
             const searchString = e.target.value.toLowerCase();
             const filteredItems = offerDatabase.filter(item => 
@@ -130,8 +119,21 @@
             displayInventory(filteredItems);
         });
 
-        // Initialize display execution
-        displayInventory(offerDatabase);
+        // Safely pull from data/promo.json to prevent internal code edits
+        fetch('data/promo.json?v=' + Date.now())
+            .then(res => {
+                if(!res.ok) throw new Error('Storage file not ready');
+                return res.json();
+            })
+            .then(data => {
+                if (data && Array.isArray(data.links)) {
+                    offerDatabase = data.links;
+                    displayInventory(offerDatabase);
+                }
+            })
+            .catch(err => {
+                storageVault.innerHTML = '<p style="color:#ef4444; padding:20px;">Configuration error. Check data/promo.json.</p>';
+            });
     </script>
 
 </body>
