@@ -1,1 +1,8 @@
+{
+    "links": [
+        { "name": "Main Offer", "url": "https://your-first-link.com" },
+        { "name": "Special Discount", "url": "https://your-second-link.com" },
+        { "name": "Join Community", "url": "https://your-third-link.com" }
+    ]
+}
 
