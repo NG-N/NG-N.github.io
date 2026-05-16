@@ -1,1 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Promotion Hub</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f9;
+            padding: 50px;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            display: inline-block;
+        }
+        .banner-box {
+            margin: 20px 0;
+            min-height: 150px;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
 
+    <div class="container">
+        <h1>Welcome</h1>
+        
+        <!-- Banner Container -->
+        <div class="banner-box">
+            <img id="banner-placeholder" src="data/banner.jpg" alt="Promotional Banner" onerror="this.src='https://placeholder.com...'">
+        </div>
+
+        <!-- Promo Link Button -->
+        <p>
+            <a id="promo-link-placeholder" href="https://github.com" class="btn">Visit Promotion Link</a>
+        </p>
+    </div>
+
+    <script>
+        console.log("System initialized. Checking local data folders...");
+
+        // Verify banner image status from data/ folder
+        const bannerImg = document.getElementById('banner-placeholder');
+        bannerImg.onload = function() {
+            console.log("Banner loaded successfully.");
+        };
+
+        // Fetch promotion configuration layout
+        fetch('data/promo.json')
+            .then(response => {
+                if (!response.ok) throw new Error('Data file promo.json not found');
+                return response.json();
+            })
+            .then(data => {
+                if (data.url) {
+                    document.getElementById('promo-link-placeholder').href = data.url;
+                    console.log("Promotional link configured to: " + data.url);
+                }
+            })
+            .catch(err => {
+                console.warn("Using default fallback link. Profile status: " + err.message);
+            });
+    </script>
+
+</body>
+</html>
