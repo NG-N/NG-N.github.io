@@ -1,1 +1,7 @@
-
+{
+    "links": [
+        { "name": "Visit Official GitHub", "url": "https://github.com" },
+        { "name": "Check GitHub Pages Docs", "url": "https://github.com" },
+        { "name": "View Profile Status", "url": "https://github.com" }
+    ]
+}
