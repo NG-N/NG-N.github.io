@@ -117,7 +117,6 @@
             displayInventory(filteredItems);
         });
 
-        // Simple CSV Spreadsheet text reader logic
         function parseSpreadsheet(csvText) {
             const lines = csvText.split('\n');
             const list = [];
@@ -125,7 +124,6 @@
                 const row = lines[i].trim();
                 if (!row) continue;
                 
-                // Splitting data values cleanly by comma delimiter
                 const commaIndex = row.indexOf(',');
                 if (commaIndex !== -1) {
                     const name = row.substring(0, commaIndex).replace(/^"|"$/g, '').trim();
@@ -138,10 +136,10 @@
             return list;
         }
 
-        // Fetch direct from the simple spreadsheet file tracking path
-        fetch('data/links.csv?v=' + Date.now())
+        // Fetches your live Google Sheet link directly and breaks the cache on every refresh
+        fetch('PASTE_YOUR_GOOGLE_SHEET_CSV_LINK_HERE' + '&v=' + Date.now())
             .then(res => {
-                if(!res.ok) throw new Error('Spreadsheet file links.csv not ready');
+                if(!res.ok) throw new Error('Spreadsheet data stream not ready');
                 return res.text();
             })
             .then(csvText => {
@@ -149,7 +147,7 @@
                 displayInventory(offerDatabase);
             })
             .catch(err => {
-                storageVault.innerHTML = '<p style="color:#ef4444; padding:20px;">Spreadsheet Error: Make sure data/links.csv exists.</p>';
+                storageVault.innerHTML = '<p style="color:#ef4444; padding:20px;">Spreadsheet Error: Check your published link or connection.</p>';
             });
     </script>
 
