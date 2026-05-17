@@ -3,45 +3,94 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Premium Offer Hub</title>
+    <title>Exclusive Offers & Content</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            background-attachment: fixed;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f4f7f6;
             margin: 0;
-            padding: 30px 15px;
-            color: #333333;
-        }
-        .hub-container {
-            background: white;
-            max-width: 800px;
-            width: 100%;
-            margin: 0 auto;
-            padding: 30px 20px;
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            padding: 40px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
             box-sizing: border-box;
-            text-align: center;
         }
-        .frame-box {
-            width: 100%;
-            height: 650px;
-            border: 2px solid #e2e8f0;
+        .container {
+            background-color: #ffffff;
+            padding: 40px 30px;
             border-radius: 12px;
-            margin-top: 15px;
-            background: #ffffff;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            max-width: 480px;
+            width: 90%;
+        }
+        h1 {
+            color: #1a1a1a;
+            font-size: 26px;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            color: #666666;
+            font-size: 16px;
+            line-height: 1.5;
+            margin-bottom: 35px;
+        }
+        .links-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .monetized-btn {
+            display: block;
+            background-color: #0070f3;
+            color: #ffffff;
+            font-size: 18px;
+            font-weight: 600;
+            text-decoration: none;
+            padding: 16px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 14px rgba(0, 112, 243, 0.2);
+            transition: background 0.2s ease, transform 0.1s ease;
+        }
+        .monetized-btn:hover {
+            background-color: #0060df;
+        }
+        .monetized-btn:active {
+            transform: scale(0.99);
+        }
+        /* Style for a secondary or alternative offer button */
+        .btn-secondary {
+            background-color: #10b981;
+            box-shadow: 0 4px 14px rgba(16, 185, 129, 0.2);
+        }
+        .btn-secondary:hover {
+            background-color: #059669;
         }
     </style>
 </head>
 <body>
 
-    <div class="hub-container">
-        <h1 style="margin-top:0; color:#1e293b;">Promotion Engine</h1>
-        <p style="color:#64748b; margin:0;">Browse or select from our verified live global inventory below</p>
+    <div class="container">
+        <h1>Available Content</h1>
+        <p class="subtitle">Select an option below to access your destination immediately.</p>
         
-        <!-- Secure seamless spreadsheet display portal -->
-        <iframe class="frame-box" src="https://google.com"></iframe>
+        <div class="links-wrapper">
+            <!-- LINK 1 -->
+            <a href="https://FIRST-MONETIZED-LINK.com" class="monetized-btn" target="_blank" rel="noopener noreferrer">
+                👉 Access Primary Content
+            </a>
+
+            <!-- LINK 2 -->
+            <a href="https://SECOND-MONETIZED-LINK.com" class="monetized-btn btn-secondary" target="_blank" rel="noopener noreferrer">
+                🔥 View Special Offer
+            </a>
+
+            <!-- LINK 3 -->
+            <a href="https://THIRD-MONETIZED-LINK.com" class="monetized-btn" target="_blank" rel="noopener noreferrer">
+                ⚡ Premium Download
+            </a>
+        </div>
     </div>
 
 </body>
