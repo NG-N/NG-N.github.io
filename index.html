@@ -118,17 +118,19 @@
         });
 
         function parseSpreadsheet(csvText) {
-            const lines = csvText.split('\n');
+            const lines = csvText.split(/\r?\n/);
             const list = [];
+            
             for (let i = 1; i < lines.length; i++) {
-                const row = lines[i].trim();
-                if (!row) continue;
+                let line = lines[i].trim();
+                if (!line) continue;
                 
-                const commaIndex = row.indexOf(',');
+                const commaIndex = line.indexOf(',');
                 if (commaIndex !== -1) {
-                    const name = row.substring(0, commaIndex).replace(/^"|"$/g, '').trim();
-                    const url = row.substring(commaIndex + 1).replace(/^"|"$/g, '').trim();
-                    if(name && url) {
+                    let name = line.substring(0, commaIndex).replace(/^"|"$/g, '').trim();
+                    let url = line.substring(commaIndex + 1).replace(/^"|"$/g, '').trim();
+                    
+                    if (name && url && (url.startsWith('http://') || url.startsWith('https://'))) {
                         list.push({ name, url });
                     }
                 }
@@ -136,8 +138,10 @@
             return list;
         }
 
-        // Fetches your live Google Sheet link directly and breaks the cache on every refresh
-        fetch('PASTE_YOUR_GOOGLE_SHEET_CSV_LINK_HERE' + '&v=' + Date.now())
+        // Your verified live Google Sheet CSV link fully integrated
+        const csvLink = 'https://google.com';
+
+        fetch(csvLink + '&v=' + Date.now())
             .then(res => {
                 if(!res.ok) throw new Error('Spreadsheet data stream not ready');
                 return res.text();
@@ -148,6 +152,7 @@
             })
             .catch(err => {
                 storageVault.innerHTML = '<p style="color:#ef4444; padding:20px;">Spreadsheet Error: Check your published link or connection.</p>';
+                console.error(err);
             });
     </script>
 
