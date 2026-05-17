@@ -117,6 +117,7 @@
             displayInventory(filteredItems);
         });
 
+        // Small fix applied here: splits cleanly at the FIRST comma only to prevent clipping URLs
         function parseSpreadsheet(csvText) {
             const lines = csvText.split(/\r?\n/);
             const list = [];
@@ -130,7 +131,7 @@
                     let name = line.substring(0, commaIndex).replace(/^"|"$/g, '').trim();
                     let url = line.substring(commaIndex + 1).replace(/^"|"$/g, '').trim();
                     
-                    if (name && url && (url.startsWith('http://') || url.startsWith('https://'))) {
+                    if (name && url) {
                         list.push({ name, url });
                     }
                 }
@@ -138,12 +139,11 @@
             return list;
         }
 
-        // Your verified live Google Sheet CSV link fully integrated
         const csvLink = 'https://google.com';
 
         fetch(csvLink + '&v=' + Date.now())
             .then(res => {
-                if(!res.ok) throw new Error('Spreadsheet data stream not ready');
+                if(!res.ok) throw new Error('Spreadsheet stream error');
                 return res.text();
             })
             .then(csvText => {
