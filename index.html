@@ -15,7 +15,7 @@
         }
         .hub-container {
             background: white;
-            max-width: 600px;
+            max-width: 800px;
             width: 100%;
             margin: 0 auto;
             padding: 30px 20px;
@@ -24,57 +24,13 @@
             box-sizing: border-box;
             text-align: center;
         }
-        .search-box {
+        .frame-box {
             width: 100%;
-            padding: 12px 15px;
-            margin: 15px 0 25px 0;
+            height: 650px;
             border: 2px solid #e2e8f0;
-            border-radius: 30px;
-            font-size: 1rem;
-            box-sizing: border-box;
-            outline: none;
-        }
-        .search-box:focus {
-            border-color: #ff4757;
-        }
-        .grid-storage {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            max-height: 500px;
-            overflow-y: auto;
-            padding-right: 5px;
-        }
-        .grid-storage::-webkit-scrollbar {
-            width: 6px;
-        }
-        .grid-storage::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 3px;
-        }
-        .offer-card {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: #f8fafc;
-            padding: 14px 20px;
-            border-radius: 10px;
-            border-left: 5px solid #ff4757;
-            text-decoration: none;
-            color: #334155;
-            font-weight: bold;
-            transition: transform 0.1s ease, background 0.2s ease;
-        }
-        .offer-card:hover {
-            background: #f1f5f9;
-            transform: scale(1.01);
-        }
-        .go-btn {
-            background: #ff4757;
-            color: white;
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 0.85rem;
+            border-radius: 12px;
+            margin-top: 15px;
+            background: #ffffff;
         }
     </style>
 </head>
@@ -82,79 +38,11 @@
 
     <div class="hub-container">
         <h1 style="margin-top:0; color:#1e293b;">Promotion Engine</h1>
-        <p style="color:#64748b; margin:0;">Search or select from our verified global inventory</p>
+        <p style="color:#64748b; margin:0;">Browse or select from our verified live global inventory below</p>
         
-        <input type="text" id="searchBar" class="search-box" placeholder="🔍 Search offers...">
-        <div id="storageVault" class="grid-storage">Loading live inventory sheet...</div>
+        <!-- Secure seamless spreadsheet display portal -->
+        <iframe class="frame-box" src="https://google.com"></iframe>
     </div>
-
-    <script>
-        let offerDatabase = [];
-        const storageVault = document.getElementById('storageVault');
-        const searchBar = document.getElementById('searchBar');
-
-        function displayInventory(items) {
-            storageVault.innerHTML = '';
-            if(!items || items.length === 0) {
-                storageVault.innerHTML = '<p style="color:#94a3b8; padding:20px;">No matching campaigns found.</p>';
-                return;
-            }
-            items.forEach(item => {
-                const card = document.createElement('a');
-                card.href = item.url;
-                card.target = '_blank';
-                card.className = 'offer-card';
-                card.innerHTML = `<span>${item.name}</span><span class="go-btn">Go</span>`;
-                storageVault.appendChild(card);
-            });
-        }
-
-        searchBar.addEventListener('input', (e) => {
-            const searchString = e.target.value.toLowerCase();
-            const filteredItems = offerDatabase.filter(item => 
-                item.name.toLowerCase().includes(searchString)
-            );
-            displayInventory(filteredItems);
-        });
-
-        // Small fix applied here: splits cleanly at the FIRST comma only to prevent clipping URLs
-        function parseSpreadsheet(csvText) {
-            const lines = csvText.split(/\r?\n/);
-            const list = [];
-            
-            for (let i = 1; i < lines.length; i++) {
-                let line = lines[i].trim();
-                if (!line) continue;
-                
-                const commaIndex = line.indexOf(',');
-                if (commaIndex !== -1) {
-                    let name = line.substring(0, commaIndex).replace(/^"|"$/g, '').trim();
-                    let url = line.substring(commaIndex + 1).replace(/^"|"$/g, '').trim();
-                    
-                    if (name && url) {
-                        list.push({ name, url });
-                    }
-                }
-            }
-            return list;
-        }
-
-        const csvLink = 'https://google.com';
-
-        fetch(csvLink + '&v=' + Date.now())
-            .then(res => {
-                if(!res.ok) throw new Error('Spreadsheet stream error');
-                return res.text();
-            })
-            .then(csvText => {
-                offerDatabase = parseSpreadsheet(csvText);
-                displayInventory(offerDatabase);
-            })
-            .catch(err => {
-                storageVault.innerHTML = '<p style="color:#ef4444; padding:20px;">Spreadsheet Error: Check your published link or connection.</p>';
-                console.error(err);
-            });
-    </script>
 
 </body>
 </html>
