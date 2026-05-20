@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading...</title>
+    
+    <script>
+        // Reads the ad ID and the final website destination from the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const scriptId = urlParams.get('id');
+        const targetUrl = urlParams.get('to');
+
+        // 1. Dynamically loads your CPM ad script
+        if (scriptId) {
+            let adScript = document.createElement('script');
+            adScript.src = `https://effectivecpmnetwork.com{scriptId}.js`;
+            document.head.appendChild(adScript);
+        }
+
+        // 2. Automatically redirects the user after 3 seconds (3000 milliseconds)
+        if (targetUrl) {
+            setTimeout(() => {
+                window.location.href = decodeURIComponent(targetUrl);
+            }, 3000); 
+        }
+    </script>
+</head>
+<body>
+    <div style="text-align: center; margin-top: 50px; font-family: sans-serif;">
+        <h2>Loading your content...</h2>
+        <p>Please wait a moment.</p>
+    </div>
+</body>
+</html>
